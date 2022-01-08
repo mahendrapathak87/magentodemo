@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="mspm2_shipping_class" resource="default" engine="innodb" comment="RH Helloworld">
+        <column xsi:type="int" name="shipping_class_id" padding="5" nullable="false" identity="true" comment="shipping_class_id" />
+        <column xsi:type="int" name="shipping_class" padding="2"  nullable="false" comment="shipping_class" />
+        <column xsi:type="varchar" name="description" nullable="false" length="255" comment="Descrition" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="shipping_class_id" />
+        </constraint>
+        <constraint xsi:type="unique" referenceId="mspm2_product_shipping_class">
+            <column name="shipping_class" />
+        </constraint>
+    </table>
+
+    <table name="mspm2_product_shipping_class" resource="default" engine="innodb" comment="RH Helloworld">
+        <column xsi:type="int" name="product_id" padding="10"  unsigned="true" nullable="false" comment="product_id" />
+        <column xsi:type="int" name="shipping_class" padding="2" nullable="false" comment="shipping_class" />
+        <constraint xsi:type="unique" referenceId="mspm2_product_shipping_unique">
+            <column name="product_id" />
+            <column name="shipping_class" />
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="mspm2_product_shipping_class_entity_id"
+                       column="product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id"
+                      onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="mspm2_product_shipping_class_shipping_class"
+                    column="shipping_class" referenceTable="mspm2_shipping_class" referenceColumn="shipping_class"
+                    onDelete="CASCADE"/>
+    </table>
+</schema>
